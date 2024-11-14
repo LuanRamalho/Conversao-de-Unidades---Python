@@ -18,21 +18,21 @@ def convert():
 
     result = None
 
-    if measure_type == 'mass':
+    if measure_type == 'massa':
         result = convert_mass(unit_from, unit_to, value)
     elif measure_type == 'volume':
         result = convert_volume(unit_from, unit_to, value)
-    elif measure_type == 'fuel':
+    elif measure_type == 'combustível':
         result = convert_fuel(unit_from, unit_to, value)
-    elif measure_type == 'speed':
+    elif measure_type == 'velocidade':
         result = convert_speed(unit_from, unit_to, value)
-    elif measure_type == 'data':
+    elif measure_type == 'dado':
         result = convert_data(unit_from, unit_to, value)
-    elif measure_type == 'length':
+    elif measure_type == 'comprimento':
         result = convert_length(unit_from, unit_to, value)
-    elif measure_type == 'temperature':
+    elif measure_type == 'temperatura':
         result = convert_temperature(unit_from, unit_to, value)
-    elif measure_type == 'time':
+    elif measure_type == 'tempo':
         result = convert_time(unit_from, unit_to, value)
 
     result_label.config(text=f"{value} {unit_from} = {result} {unit_to}")
@@ -44,14 +44,14 @@ def populate_units(event):
 
 # Conversões
 units = {
-    'mass': ["miligrama", "grama", "quilograma", "onça", "libra"],
+    'massa': ["miligrama", "grama", "quilograma", "onça", "libra"],
     'volume': ["mililitro", "metro cúbico", "litro"],
-    'fuel': ["litro", "galão"],
-    'speed': ["kmh", "mph", "ms"],
-    'data': ["bit", "byte", "kilobyte", "megabyte", "gigabyte", "terabyte"],
-    'length': ["picômetro", "nanômetro", "micrômetro", "milímetro", "metro", "pé", "jarda", "polegada", "quilômetro"],
-    'temperature': ["Celsius", "Fahrenheit", "Kelvin"],
-    'time': ["milissegundos", "segundos", "minutos", "horas", "dias", "semanas", "meses", "anos", "décadas", "séculos"]
+    'combustível': ["litro", "galão"],
+    'velocidade': ["kmh", "mph", "ms"],
+    'dado': ["bit", "byte", "kilobyte", "megabyte", "gigabyte", "terabyte"],
+    'comprimento': ["picômetro", "nanômetro", "micrômetro", "milímetro", "metro", "pé", "jarda", "polegada", "quilômetro"],
+    'temperatura': ["Celsius", "Fahrenheit", "Kelvin"],
+    'tempo': ["milissegundos", "segundos", "minutos", "horas", "dias", "semanas", "meses", "anos", "décadas", "séculos"]
 }
 
 # Funções de conversão
