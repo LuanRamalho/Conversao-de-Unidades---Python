@@ -153,8 +153,6 @@ unit_to_var = tk.StringVar()
 style = ttk.Style()
 style.configure("TFrame", background="cyan")  # Cor do fundo do frame
 style.configure("TLabel", background="cyan", font=("Helvetica", 12), foreground="#333333")  # Fonte e cor dos labels
-style.configure("TButton", background="#4CAF50", foreground="blue", font=("Helvetica", 12), padding=6)  # Estilo do botão
-style.map("TButton", background=[('active', '#45a049')])  # Cor do botão quando ativo
 style.configure("TCombobox", font=("Helvetica", 12), width=20)  # Estilo da combobox
 style.configure("TEntry", font=("Helvetica", 12), width=18)  # Estilo da entry
 
@@ -184,7 +182,7 @@ value_entry = ttk.Entry(frame)
 value_entry.grid(row=3, column=1, padx=10, pady=5)
 
 # Botão de conversão
-convert_button = ttk.Button(frame, text="Converter", command=convert)
+convert_button = tk.Button(frame, text="Converter", command=convert , font=("Arial", 12, "bold") , bg="#006400" , fg="#FFFFE0")
 convert_button.grid(row=4, columnspan=2, pady=10)
 
 # Resultado
