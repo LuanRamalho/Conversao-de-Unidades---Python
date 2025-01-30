@@ -34,6 +34,10 @@ def convert():
         result = convert_temperature(unit_from, unit_to, value)
     elif measure_type == 'tempo':
         result = convert_time(unit_from, unit_to, value)
+    elif measure_type == 'frequência':
+        result = convert_frequency(unit_from, unit_to, value)
+    elif measure_type == 'área':
+        result = convert_area(unit_from, unit_to, value)
 
     result_label.config(text=f"{value} {unit_from} = {result} {unit_to}")
 
@@ -46,12 +50,14 @@ def populate_units(event):
 units = {
     'massa': ["miligrama", "grama", "quilograma", "onça", "libra"],
     'volume': ["mililitro", "metro cúbico", "litro"],
-    'combustível': ["litro", "galão"],
+    'combustível': ["litro", "galão", "galão britânico"],
     'velocidade': ["kmh", "mph", "ms"],
     'dado': ["bit", "byte", "kilobyte", "megabyte", "gigabyte", "terabyte"],
-    'comprimento': ["picômetro", "nanômetro", "micrômetro", "milímetro", "metro", "pé", "jarda", "polegada", "quilômetro"],
+    'comprimento': ["picômetro", "nanômetro", "micrômetro", "milímetro", "metro", "pé", "jarda", "polegada", "quilômetro", "milha náutica"],
     'temperatura': ["Celsius", "Fahrenheit", "Kelvin"],
-    'tempo': ["milissegundos", "segundos", "minutos", "horas", "dias", "semanas", "meses", "anos", "décadas", "séculos"]
+    'tempo': ["milissegundos", "segundos", "minutos", "horas", "dias", "semanas", "meses", "anos", "décadas", "séculos"],
+    'frequência': ["Hertz", "quilohertz", "megahertz", "gigahertz"],
+    'área': ["quilômetro quadrado", "metro quadrado", "milha quadrada", "jarda quadrada", "pé quadrado", "polegada quadrada", "hectare", "acre"]
 }
 
 # Funções de conversão
@@ -75,8 +81,9 @@ def convert_volume(from_unit, to_unit, value):
 
 def convert_fuel(from_unit, to_unit, value):
     conversions = {
-        "litro": {"galão": 0.264172},
-        "galão": {"litro": 3.78541}
+        "litro": {"galão": 0.264172, "galão britânico": 0.219969},
+        "galão": {"litro": 3.78541, "galão britânico": 0.832674},
+        "galão britânico": {"litro": 4.54609, "galão": 1.20095}
     }
     return value * (conversions[from_unit].get(to_unit, 1))
 
@@ -101,15 +108,16 @@ def convert_data(from_unit, to_unit, value):
 
 def convert_length(from_unit, to_unit, value):
     conversions = {
-        "picômetro": {"nanômetro": 0.001, "micrômetro": 1e-6, "milímetro": 1e-9, "metro": 1e-12, "pé": 3.2808e-12, "jarda": 1.0936e-12, "polegada": 3.937e-11, "quilômetro": 1e-15},
-        "nanômetro": {"picômetro": 1000, "micrômetro": 0.001, "milímetro": 1e-6, "metro": 1e-9, "pé": 3.2808e-9, "jarda": 1.0936e-9, "polegada": 3.937e-8, "quilômetro": 1e-12},
-        "micrômetro": {"picômetro": 1e6, "nanômetro": 1000, "milímetro": 0.001, "metro": 1e-6, "pé": 3.2808e-6, "jarda": 1.0936e-6, "polegada": 3.937e-5, "quilômetro": 1e-9},
-        "milímetro": {"picômetro": 1e9, "nanômetro": 1e6, "micrômetro": 1000, "metro": 0.001, "pé": 0.00328084, "jarda": 0.00109361, "polegada": 0.0393701, "quilômetro": 1e-6},
-        "metro": {"picômetro": 1e12, "nanômetro": 1e9, "micrômetro": 1e6, "milímetro": 1000, "pé": 3.28084, "jarda": 1.09361, "polegada": 39.3701, "quilômetro": 0.001},
-        "pé": {"picômetro": 3.048e11, "nanômetro": 3.048e8, "micrômetro": 3.048e6, "milímetro": 304.8, "metro": 0.3048, "jarda": 0.333333, "polegada": 12, "quilômetro": 0.0003048},
-        "jarda": {"picômetro": 9.144e11, "nanômetro": 9.144e8, "micrômetro": 9.144e6, "milímetro": 914.4, "metro": 0.9144, "pé": 3, "polegada": 36, "quilômetro": 0.0009144},
-        "polegada": {"picômetro": 2.54e10, "nanômetro": 2.54e7, "micrômetro": 2.54e4, "milímetro": 25.4, "metro": 0.0254, "pé": 0.0833333, "jarda": 0.0277778, "quilômetro": 2.54e-5},
-        "quilômetro": {"picômetro": 1e15, "nanômetro": 1e12, "micrômetro": 1e9, "milímetro": 1e6, "metro": 1000, "pé": 3280.84, "jarda": 1094, "polegada": 39370.1}
+        "picômetro": {"nanômetro": 0.001, "micrômetro": 1e-6, "milímetro": 1e-9, "metro": 1e-12, "pé": 3.2808e-12, "jarda": 1.0936e-12, "polegada": 3.937e-11, "quilômetro": 1e-15, "milha náutica": 5.3996e-16},
+        "nanômetro": {"picômetro": 1000, "micrômetro": 0.001, "milímetro": 1e-6, "metro": 1e-9, "pé": 3.2808e-9, "jarda": 1.0936e-9, "polegada": 3.937e-8, "quilômetro": 1e-12, "milha náutica": 5.3996e-13},
+        "micrômetro": {"picômetro": 1e6, "nanômetro": 1000, "milímetro": 0.001, "metro": 1e-6, "pé": 3.2808e-6, "jarda": 1.0936e-6, "polegada": 3.937e-5, "quilômetro": 1e-9, "milha náutica": 5.3996e-10},
+        "milímetro": {"picômetro": 1e9, "nanômetro": 1e6, "micrômetro": 1000, "metro": 0.001, "pé": 0.00328084, "jarda": 0.00109361, "polegada": 0.0393701, "quilômetro": 1e-6, "milha náutica": 5.3996e-7},
+        "metro": {"picômetro": 1e12, "nanômetro": 1e9, "micrômetro": 1e6, "milímetro": 1000, "pé": 3.28084, "jarda": 1.09361, "polegada": 39.3701, "quilômetro": 0.001, "milha náutica": 0.00053996},
+        "pé": {"picômetro": 3.048e11, "nanômetro": 3.048e8, "micrômetro": 3.048e6, "milímetro": 304.8, "metro": 0.3048, "jarda": 0.333333, "polegada": 12, "quilômetro": 0.0003048, "milha náutica": 0.000164579},
+        "jarda": {"picômetro": 9.144e11, "nanômetro": 9.144e8, "micrômetro": 9.144e6, "milímetro": 914.4, "metro": 0.9144, "pé": 3, "polegada": 36, "quilômetro": 0.0009144, "milha náutica": 0.000493737},
+        "polegada": {"picômetro": 2.54e10, "nanômetro": 2.54e7, "micrômetro": 2.54e4, "milímetro": 25.4, "metro": 0.0254, "pé": 0.0833333, "jarda": 0.0277778, "quilômetro": 2.54e-5, "milha náutica": 1.3715e-5},
+        "quilômetro": {"picômetro": 1e15, "nanômetro": 1e12, "micrômetro": 1e9, "milímetro": 1e6, "metro": 1000, "pé": 3280.84, "jarda": 1094, "polegada": 39370.1, "milha náutica": 0.53996},
+        "milha náutica": {"picômetro": 1.852e15, "nanômetro": 1.852e12, "micrômetro": 1.852e9, "milímetro": 1.852e6, "metro": 1852, "pé": 6076.12, "jarda": 2025.37, "polegada": 72913.4, "quilômetro": 1.852}
     }
     return value * (conversions[from_unit].get(to_unit, 1))
 
@@ -138,11 +146,33 @@ def convert_time(from_unit, to_unit, value):
     }
     return value * (conversions[from_unit].get(to_unit, 1))
 
+def convert_frequency(from_unit, to_unit, value):
+    conversions = {
+        "Hertz": {"quilohertz": 1e-3, "megahertz": 1e-6, "gigahertz": 1e-9},
+        "quilohertz": {"Hertz": 1e3, "megahertz": 1e-3, "gigahertz": 1e-6},
+        "megahertz": {"Hertz": 1e6, "quilohertz": 1e3, "gigahertz": 1e-3},
+        "gigahertz": {"Hertz": 1e9, "quilohertz": 1e6, "megahertz": 1e3}
+    }
+    return value * (conversions[from_unit].get(to_unit, 1))
+
+def convert_area(from_unit, to_unit, value):
+    conversions = {
+        "quilômetro quadrado": {"metro quadrado": 1e6, "milha quadrada": 0.386102, "jarda quadrada": 1.196e6, "pé quadrado": 1.076e7, "polegada quadrada": 1.55e9, "hectare": 100, "acre": 247.105},
+        "metro quadrado": {"quilômetro quadrado": 1e-6, "milha quadrada": 3.861e-7, "jarda quadrada": 1.196, "pé quadrado": 10.764, "polegada quadrada": 1550, "hectare": 1e-4, "acre": 0.000247105},
+        "milha quadrada": {"quilômetro quadrado": 2.58999, "metro quadrado": 2.59e6, "jarda quadrada": 3.098e6, "pé quadrado": 2.788e7, "polegada quadrada": 4.014e9, "hectare": 258.999, "acre": 640},
+        "jarda quadrada": {"quilômetro quadrado": 8.3613e-7, "metro quadrado": 0.836127, "milha quadrada": 3.2283e-7, "pé quadrado": 9, "polegada quadrada": 1296, "hectare": 8.3613e-5, "acre": 0.000206612},
+        "pé quadrado": {"quilômetro quadrado": 9.2903e-8, "metro quadrado": 0.092903, "milha quadrada": 3.587e-8, "jarda quadrada": 0.111111, "polegada quadrada": 144, "hectare": 9.2903e-6, "acre": 2.2957e-5},
+        "polegada quadrada": {"quilômetro quadrado": 6.4516e-10, "metro quadrado": 0.00064516, "milha quadrada": 2.491e-10, "jarda quadrada": 0.000771605, "pé quadrado": 0.00694444, "hectare": 6.4516e-8, "acre": 1.5942e-7},
+        "hectare": {"quilômetro quadrado": 0.01, "metro quadrado": 10000, "milha quadrada": 0.00386102, "jarda quadrada": 11960, "pé quadrado": 107639, "polegada quadrada": 1.55e7, "acre": 2.47105},
+        "acre": {"quilômetro quadrado": 0.00404686, "metro quadrado": 4046.86, "milha quadrada": 0.0015625, "jarda quadrada": 4840, "pé quadrado": 43560, "polegada quadrada": 6.273e6, "hectare": 0.404686}
+    }
+    return value * (conversions[from_unit].get(to_unit, 1))
+
 # Criando a janela principal
 root = tk.Tk()
 root.title("Conversor de Unidades")
 root.configure(bg="cyan")  # Fundo claro e suave
-root.geometry("400x350")  # Tamanho da janela
+root.geometry("400x400")  # Tamanho da janela ajustado para acomodar novas opções
 
 # Variáveis
 measure_type_var = tk.StringVar()
@@ -191,4 +221,3 @@ result_label.grid(row=5, columnspan=2, pady=10)
 
 # Tornando a interface mais colorida e com melhores espaçamentos
 root.mainloop()
-
